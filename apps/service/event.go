@@ -16,11 +16,13 @@ type (
 		FindListCategory(c context.Context) ([]md.EventCategory, error)
 		AddCategory(c context.Context, catReq md.CreateEventCategoryReq) (md.CreateEventCategoryRes, error)
 		GetEventCategory(c context.Context, catid uint) (md.GetEventCategoryRes, error)
+		UpdateEventCategory(c context.Context, catReq md.UpdateEventCategoryReq, catid uint) (md.UpdateEventCategoryRes, error)
 
 		//event
 		FindListEvents(c context.Context) ([]md.Event, error)
 		GetEvent(c context.Context, eventid uint) (md.GetEventRes, error)
 		CreateEvent(c context.Context, EvReq md.CreateEventReq) (md.CreateEventRes, error)
+		UpdateEvent(c context.Context, EvReq md.UpdateEventReq, eventid uint) error
 
 		//event price tipe
 	}
@@ -96,6 +98,14 @@ func (s *eventService) CreateEvent(c context.Context, EvReq md.CreateEventReq) (
 	return productRes, nil
 }
 
+// Event Update
+func (s *eventService) UpdateEvent(c context.Context, EvReq md.UpdateEventReq, eventid uint) error {
+	_, cancel := context.WithTimeout(c, s.contextTimeout)
+	defer cancel()
+
+	return nil
+}
+
 // Event Category Get List
 func (s *eventService) FindListCategory(c context.Context) ([]md.EventCategory, error) {
 	_, cancel := context.WithTimeout(c, s.contextTimeout)
@@ -124,7 +134,15 @@ func (s *eventService) AddCategory(c context.Context, catReq md.CreateEventCateg
 	return katResp, nil
 }
 
-// Events Get Data
+// Event Category Update
+func (s *eventService) UpdateEventCategory(c context.Context, catReq md.UpdateEventCategoryReq, catid uint) (md.UpdateEventCategoryRes, error) {
+	_, cancel := context.WithTimeout(c, s.contextTimeout)
+	defer cancel()
+
+	return md.UpdateEventCategoryRes{}, nil
+}
+
+// Event Category Get
 func (s *eventService) GetEventCategory(c context.Context, catid uint) (md.GetEventCategoryRes, error) {
 	_, cancel := context.WithTimeout(c, s.contextTimeout)
 	defer cancel()

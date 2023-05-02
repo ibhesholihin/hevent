@@ -47,24 +47,25 @@ type (
 	}
 
 	PaymentDetails struct {
-		ID         uint      `json:"id" gorm:"primaryKey;not null;unique"`
-		Ammount    uint      `json:"ammount" gorm:"not null;default:0"`
-		ReceiptURL string    `json:"receipt_url" gorm:"type:text"`
-		CreatedAt  time.Time `json:"created_at" gorm:"<-:create"`
-		UpdatedAt  time.Time `json:"updated_at"`
-
-		PaymentMethod string `json:"payment_method" gorm:"type:text;not null;"`
+		ID            uint      `json:"id" gorm:"primaryKey;not null;unique"`
+		Ammount       uint      `json:"ammount" gorm:"not null;default:0"`
+		ReceiptURL    string    `json:"receipt_url" gorm:"type:text"`
+		CreatedAt     time.Time `json:"created_at" gorm:"<-:create"`
+		UpdatedAt     time.Time `json:"updated_at"`
+		Status        int8      `json:"status" gorm:"not null;default:0"`
+		PaymentMethod string    `json:"payment_method" gorm:"type:text;"`
 	}
 )
 
 type (
 	CartSessionRes struct {
 		ID        uint          `json:"id"`
-		UserUID   int64         `json:"user_uid"`
+		UserUID   int64         `json:"user_id"`
 		Total     uint          `json:"total"`
 		UpdatedAt time.Time     `json:"updated_at"`
 		CartItems []CartItemRes `json:"cart_items"`
 	}
+
 	CartItemRes struct {
 		ID        uint      `json:"id"`
 		SessionID uint      `json:"session_id"`
@@ -101,9 +102,10 @@ type (
 		CreatedAt time.Time `json:"created_at"`
 		UpdatedAt time.Time `json:"updated_at"`
 	}
+
 	GetOrderRes struct {
 		ID             uint                   `json:"id"`
-		UserUID        string                 `json:"user_uid"`
+		UserUID        int64                  `json:"user_id"`
 		AddressID      uint                   `json:"address_id"`
 		PaymentID      uint                   `json:"payment_id"`
 		Total          uint                   `json:"total"`
@@ -115,6 +117,7 @@ type (
 		PaymentDetails GetOrderUserPaymentRes `json:"payment_details"`
 		OrderItems     []GetOrderItemRes
 	}
+
 	GetOrderItemRes struct {
 		ID        uint      `json:"id"`
 		OrderID   uint      `json:"order_id"`
@@ -123,11 +126,13 @@ type (
 		UpdatedAt time.Time `json:"updated_at"`
 		Event     Event     `json:"events"`
 	}
+
 	GetOrderUserRes struct {
 		Fullname string `json:"fullname"`
 		Email    string `json:"email"`
 		Phone    uint   `json:"phone"`
 	}
+
 	GetOrderUserAddressRes struct {
 		ID           uint   `json:"id"`
 		AddressLabel string `json:"address_label"`
@@ -138,6 +143,7 @@ type (
 		Country      string `json:"country"`
 		RegionID     string `json:"region_id"`
 	}
+
 	GetOrderUserPaymentRes struct {
 		ID            uint      `json:"id"`
 		UserPaymentID uint      `json:"user_payment_id"`
@@ -148,6 +154,7 @@ type (
 		AccountNumber uint      `json:"account_number"`
 		Exp           time.Time `json:"exp"`
 	}
+
 	ReceiptURLReq struct {
 		ReceiptURL string `json:"receipt_url"`
 	}

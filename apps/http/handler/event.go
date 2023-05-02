@@ -276,8 +276,29 @@ func (h *eventHandler) AddCategory(c echo.Context) error {
 // @Router api/v1/admin/category/:categoryid [put]
 // @Security JwtToken / Admin
 func (h *eventHandler) UpdateEventCategory(c echo.Context) error {
-	//uid, _ := strconv.Atoi(c.Param("categoryid"))
-	return nil
+	uid, _ := strconv.Atoi(c.Param("categoryid"))
+	ctx := c.Request().Context()
+	req := md.UpdateEventReq{}
+
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, md.HttpResponse{
+			Code:    http.StatusBadRequest,
+			Message: "Invalid Body Request",
+			Data:    err.Error(),
+		})
+	}
+
+	if err := h.EventService.UpdateEvent(ctx, req, uint(uid)); err != nil {
+		return c.JSON(http.StatusInternalServerError, md.HttpResponse{
+			Code:    http.StatusInternalServerError,
+			Message: "Internal Server Error",
+			Data:    err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, md.HTTPResponseWithoutData{
+		Code:    http.StatusOK,
+		Message: "Admin Profile Updated Successfully",
+	})
 }
 
 // RemoveEventCategory godoc

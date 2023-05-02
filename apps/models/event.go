@@ -80,6 +80,21 @@ type (
 		Category string `json:"kategori"`
 	}
 
+	CreateEventPriceReq struct {
+		EventID uint   `json:"event_id"`
+		Tipe    string `json:"tipe" `
+		Price   uint   `json:"price"`
+		Qty     uint   `json:"qty"`
+	}
+
+	CreateEventTipeRes struct {
+		ID      uint   `json:"id"`
+		EventID uint   `json:"event_id"`
+		Tipe    string `json:"tipe" `
+		Price   uint   `json:"price"`
+		Qty     uint   `json:"qty"`
+	}
+
 	//GET
 	GetEventRes struct {
 		ID          uint                `json:"id"`
@@ -99,6 +114,13 @@ type (
 		CategoryName string `json:"kategori"`
 	}
 
+	GetEventPriceRes struct {
+		EventID uint   `json:"event_id"`
+		Tipe    string `json:"tipe" `
+		Price   uint   `json:"price"`
+		Qty     uint   `json:"qty"`
+	}
+
 	//UPDATE
 	UpdateEventReq struct {
 		Name          string `json:"name"`
@@ -107,6 +129,16 @@ type (
 		Quantity      uint   `json:"quantity"`
 		EventCategory string `json:"product_category"`
 		ImageURL      string `json:"image_url"`
+	}
+
+	UpdateEventCategoryReq struct {
+		ID       uint   `json:"id"`
+		Category string `json:"kategori"`
+	}
+
+	UpdateEventCategoryRes struct {
+		ID       uint   `json:"id"`
+		Category string `json:"kategori"`
 	}
 )
 

@@ -39,15 +39,15 @@ func Migrate(DB *gorm.DB) {
 	DB.AutoMigrate(
 		&md.Admin{},
 
-		&md.Event{},
-		&md.EventCategory{},
-		&md.EventPriceTipe{},
-		&md.EventSponsor{},
-
 		&md.User{},
 
 		&md.UserProfile{},
 		&md.UserAddress{},
+
+		&md.Event{},
+		&md.EventCategory{},
+		&md.EventPriceTipe{},
+		&md.EventSponsor{},
 
 		//&md.CartSession{},
 		//&md.CartItem{},

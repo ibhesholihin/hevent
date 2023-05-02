@@ -107,6 +107,7 @@ type (
 		AddressID uint   `json:"address_id"`
 		UserID    string `json:"user_id"`
 	}
+
 	UserAddressRes struct {
 		ID           uint   `json:"id"`
 		AddressLabel string `json:"address_label"`

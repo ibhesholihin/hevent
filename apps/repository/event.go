@@ -94,24 +94,23 @@ func (repo *eventRepo) AddEventPrice(price md.EventPriceTipe) (md.EventPriceTipe
 	return price, nil
 }
 
-func (repo *eventRepo) UpdateEventPrice(event md.EventPriceTipe) (md.EventPriceTipe, error) {
-
-	return md.EventPriceTipe{}, nil
+func (repo *eventRepo) UpdateEventPrice(price md.EventPriceTipe) (md.EventPriceTipe, error) {
+	if err := repo.Save(&price).Error; err != nil {
+		return md.EventPriceTipe{}, err
+	}
+	return price, nil
 }
 
 func (repo *eventRepo) GetEventPrice(eventid uint) ([]md.EventPriceTipe, error) {
-
 	price := []md.EventPriceTipe{}
 	if err := repo.Where("event_price_tipes.event_id = ?", eventid).
 		Joins("Events").Find(&price).Error; err != nil {
 		return []md.EventPriceTipe{}, err
 	}
 	return price, nil
-
 }
 
 func (repo *eventRepo) GetEventPriceByID(id uint) (md.EventPriceTipe, error) {
-
 	price := md.EventPriceTipe{}
 	if err := repo.Where("event_price_tipes.id = ?", id).
 		Joins("Events").First(&price).Error; err != nil {
