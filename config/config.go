@@ -9,16 +9,18 @@ import (
 
 // Config ...
 type Config struct {
-	DatabaseURL    string
-	CacheURL       string
-	LoggerLevel    string
-	ContextTimeout int
-	JWTSecretKey   string
-	DB_PORT        string
-	DB_HOST        string
-	DB_NAME        string
-	DB_USER        string
-	DB_PASS        string
+	DatabaseURL         string
+	CacheURL            string
+	LoggerLevel         string
+	ContextTimeout      int
+	JWTSecretKey        string
+	DB_PORT             string
+	DB_HOST             string
+	DB_NAME             string
+	DB_USER             string
+	DB_PASS             string
+	MIDTRANS_SERVER_KEY string
+	MIDTRANS_CLIENT_KEY string
 }
 
 // LoadConfig will load config from environment variable
@@ -32,6 +34,9 @@ func LoadConfig() (config *Config) {
 	loggerLevel := os.Getenv("LOGGER_LEVEL")
 	contextTimeout, _ := strconv.Atoi(os.Getenv("CONTEXT_TIMEOUT"))
 	jwtSecretKey := os.Getenv("JWT_SECRET_KEY")
+
+	midtrans_SERVER_KEY := os.Getenv("MIDTRANS_SERVER_KEY")
+	midtrans_CLIENT_KEY := os.Getenv("MIDTRANS_CLIENT_KEY=SB-Mid-client")
 
 	db_PORT := os.Getenv("DB_PORT")
 	db_HOST := os.Getenv("DB_HOST")
@@ -51,5 +56,8 @@ func LoadConfig() (config *Config) {
 		DB_NAME: db_NAME,
 		DB_USER: db_USER,
 		DB_PASS: db_PASS,
+
+		MIDTRANS_SERVER_KEY: midtrans_SERVER_KEY,
+		MIDTRANS_CLIENT_KEY: midtrans_CLIENT_KEY,
 	}
 }

@@ -9,6 +9,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/labstack/gommon v0.4.0
+	github.com/midtrans/midtrans-go v1.3.6
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/crypto v0.8.0
 	gorm.io/driver/mysql v1.4.7

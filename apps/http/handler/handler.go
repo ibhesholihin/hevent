@@ -1,6 +1,8 @@
 package handler
 
-import "github.com/ibhesholihin/hevent/apps/service"
+import (
+	"github.com/ibhesholihin/hevent/apps/service"
+)
 
 type Handlers struct {
 	AdminHandler
