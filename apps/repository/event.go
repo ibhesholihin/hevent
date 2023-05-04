@@ -11,12 +11,13 @@ type (
 		FindOrCreateCategory(name string) (md.EventCategory, error)
 		FindCategory(id uint) (md.EventCategory, error)
 		FindListCategory() ([]md.EventCategory, error)
+		UpdateEventCategory(cat md.EventCategory) error
 
 		//Event
 		FindListEvent() ([]md.Event, error)
 		CreateEvent(event md.Event) (md.Event, error)
 		GetEvent(id uint) (md.Event, error)
-		UpdateEvent(event md.Event) (md.Event, error)
+		UpdateEvent(event md.Event) error
 
 		//Event Price Type
 		AddEventPrice(price md.EventPriceTipe) (md.EventPriceTipe, error)
@@ -55,6 +56,13 @@ func (repo *eventRepo) FindListCategory() ([]md.EventCategory, error) {
 	return listCategory, nil
 }
 
+func (repo *eventRepo) UpdateEventCategory(cat md.EventCategory) error {
+	if err := repo.Save(&cat).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // Event
 func (repo *eventRepo) FindListEvent() ([]md.Event, error) {
 	listEvent := []md.Event{}
@@ -79,11 +87,11 @@ func (repo *eventRepo) GetEvent(id uint) (md.Event, error) {
 	return event, nil
 }
 
-func (repo *eventRepo) UpdateEvent(event md.Event) (md.Event, error) {
+func (repo *eventRepo) UpdateEvent(event md.Event) error {
 	if err := repo.Save(&event).Error; err != nil {
-		return md.Event{}, err
+		return err
 	}
-	return event, nil
+	return nil
 }
 
 // event price type

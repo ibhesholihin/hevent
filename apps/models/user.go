@@ -23,11 +23,15 @@ type (
 	}
 
 	UserProfile struct {
-		ID        int64     `json:"id" gorm:"type:int;primaryKey;not null;unique"`
-		Fullname  string    `json:"fullname" gorm:"type:varchar(100);not null;"`
-		Gender    string    `json:"gender" gorm:"type:varchar(20)"`
-		Email     string    `json:"email" gorm:"type:varchar(100);not null;unique"`
-		Phone     uint      `json:"phone" gorm:"default:0"`
+		ID       int64  `json:"id" gorm:"type:int;primaryKey;not null;unique"`
+		Fullname string `json:"fullname" gorm:"type:varchar(100);not null;"`
+		Gender   string `json:"gender" gorm:"type:varchar(20)"`
+		Email    string `json:"email" gorm:"type:varchar(100);not null;unique"`
+		Phone    string `json:"phone" gorm:"type:varchar(30);not null;unique"`
+
+		Wallet       uint `json:"wallet" gorm:"default:0"`
+		LoyaltyPoint uint `json:"loyalty_point" gorm:"default:0"`
+
 		CreatedAt time.Time `json:"created_at" gorm:"<-:create"`
 		UpdatedAt time.Time `json:"updated_at"`
 	}
@@ -78,7 +82,7 @@ type (
 		Fullname string `json:"fullname"`
 		Gender   string `json:"gender"`
 		Email    string `json:"email"`
-		Phone    uint   `json:"phone"`
+		Phone    string `json:"phone"`
 	}
 	UpdateProfileReq struct {
 		ID        int64     `json:"id"`
@@ -86,7 +90,7 @@ type (
 		Fullname  string    `json:"fullname"`
 		Gender    string    `json:"gender"`
 		Email     string    `json:"email"`
-		Phone     uint      `json:"phone"`
+		Phone     string    `json:"phone"`
 		CreatedAt time.Time `json:"created_at"`
 		UpdatedAt time.Time `json:"updated_at"`
 	}

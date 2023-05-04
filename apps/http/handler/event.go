@@ -22,6 +22,15 @@ type (
 		AddEvent(c echo.Context) error
 		UpdateEvent(c echo.Context) error
 		RemoveEvent(c echo.Context) error
+
+		GetEventPrice(c echo.Context) error
+		GetEventPriceTipe(c echo.Context) error
+
+		/*
+			AddEventPrice(c echo.Context) error
+			UpdateEventPrice(c echo.Context) error
+			RemoveEventPrice(c echo.Context) error
+		*/
 	}
 
 	eventHandler struct {
@@ -29,9 +38,9 @@ type (
 	}
 )
 
-//////////////////////////
-//EVENTS HANDLER
-//////////////////////////
+//////////////////
+//EVENTS HANDLER//
+//////////////////
 
 // GetEvent godoc
 // @Summary Event GetEvent
@@ -167,7 +176,7 @@ func (h *eventHandler) RemoveEvent(c echo.Context) error {
 }
 
 //////////////////////////
-//EVENT CATEGORY HANDLER
+//EVENT CATEGORY HANDLER//
 //////////////////////////
 
 // GetListCategory godoc
@@ -297,7 +306,7 @@ func (h *eventHandler) UpdateEventCategory(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, md.HTTPResponseWithoutData{
 		Code:    http.StatusOK,
-		Message: "Admin Profile Updated Successfully",
+		Message: "Event Updated Successfully",
 	})
 }
 
@@ -311,6 +320,58 @@ func (h *eventHandler) UpdateEventCategory(c echo.Context) error {
 // @Router api/v1/admin/category/:categoryid [delete]
 // @Security JwtToken / Admin
 func (h *eventHandler) RemoveEventCategory(c echo.Context) error {
+	//ctx := c.Request().Context()
 	//uid, _ := strconv.Atoi(c.Param("categoryid"))
 	return nil
+}
+
+////////////////////////////
+//EVENT PRICE TYPE HANDLER//
+////////////////////////////
+
+// GetEventPrice godoc
+// @Summary Event GetEventPrice
+// @Description Event GetEventPrice
+// @Tags Event
+// @Accept json
+// @Produce json
+// @Success 200
+// @Router api/v1/public/events/price/:eventid [get]
+func (h *eventHandler) GetEventPrice(c echo.Context) error {
+	//ctx := c.Request().Context()
+	uid, _ := strconv.Atoi(c.Param("eventid"))
+
+	return c.JSON(http.StatusOK, md.HttpResponse{
+		Code:    http.StatusOK,
+		Message: "Event Price Found",
+		Data:    uid,
+	})
+}
+
+// GetEventPriceTipe godoc
+// @Summary Event GetEventPriceTipe
+// @Description Event GetEventPriceTipe
+// @Tags Event
+// @Accept json
+// @Produce json
+// @Success 200
+// @Router api/v1/public/events/price/:tipeid [get]
+func (h *eventHandler) GetEventPriceTipe(c echo.Context) error {
+	ctx := c.Request().Context()
+	uid, _ := strconv.Atoi(c.Param("tipeid"))
+
+	price, err := h.EventService.FindListPrice(ctx, uint(uid))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, md.HttpResponse{
+			Code:    http.StatusInternalServerError,
+			Message: "Internal Server Error",
+			Data:    err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, md.HttpResponse{
+		Code:    http.StatusOK,
+		Message: "Event Price Found",
+		Data:    price,
+	})
 }

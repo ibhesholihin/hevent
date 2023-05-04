@@ -16,7 +16,7 @@ type (
 		FindListCategory(c context.Context) ([]md.EventCategory, error)
 		AddCategory(c context.Context, catReq md.CreateEventCategoryReq) (md.CreateEventCategoryRes, error)
 		GetEventCategory(c context.Context, catid uint) (md.GetEventCategoryRes, error)
-		UpdateEventCategory(c context.Context, catReq md.UpdateEventCategoryReq, catid uint) (md.UpdateEventCategoryRes, error)
+		UpdateEventCategory(c context.Context, catReq md.EventCategory, catid uint) (md.EventCategory, error)
 
 		//event
 		FindListEvents(c context.Context) ([]md.Event, error)
@@ -25,6 +25,7 @@ type (
 		UpdateEvent(c context.Context, EvReq md.UpdateEventReq, eventid uint) error
 
 		//event price tipe
+		FindListPrice(c context.Context, eventid uint) ([]md.EventPriceTipe, error)
 	}
 
 	//init service parameter
@@ -103,6 +104,19 @@ func (s *eventService) UpdateEvent(c context.Context, EvReq md.UpdateEventReq, e
 	_, cancel := context.WithTimeout(c, s.contextTimeout)
 	defer cancel()
 
+	event := md.Event{
+		ID:          eventid,
+		CategoryID:  EvReq.CategoryID,
+		Event_Name:  EvReq.Name,
+		Description: EvReq.Description,
+		Quantity:    EvReq.Quantity,
+		Location:    EvReq.Location,
+	}
+
+	err := s.stores.Event.UpdateEvent(event)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -135,11 +149,21 @@ func (s *eventService) AddCategory(c context.Context, catReq md.CreateEventCateg
 }
 
 // Event Category Update
-func (s *eventService) UpdateEventCategory(c context.Context, catReq md.UpdateEventCategoryReq, catid uint) (md.UpdateEventCategoryRes, error) {
+func (s *eventService) UpdateEventCategory(c context.Context, catReq md.EventCategory, catid uint) (md.EventCategory, error) {
 	_, cancel := context.WithTimeout(c, s.contextTimeout)
 	defer cancel()
 
-	return md.UpdateEventCategoryRes{}, nil
+	cat := md.EventCategory{
+		ID:       catid,
+		Category: catReq.Category,
+	}
+
+	err := s.stores.Event.UpdateEventCategory(cat)
+	if err != nil {
+		return md.EventCategory{}, err
+	}
+	return cat, nil
+
 }
 
 // Event Category Get
@@ -157,4 +181,18 @@ func (s *eventService) GetEventCategory(c context.Context, catid uint) (md.GetEv
 	}
 
 	return catRes, nil
+}
+
+// Event Price Get
+func (s *eventService) FindListPrice(c context.Context, eventid uint) ([]md.EventPriceTipe, error) {
+	_, cancel := context.WithTimeout(c, s.contextTimeout)
+	defer cancel()
+
+	price, err := s.stores.Event.GetEventPrice(eventid)
+	if err != nil {
+		return []md.EventPriceTipe{}, err
+	}
+
+	return price, nil
+
 }

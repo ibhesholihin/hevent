@@ -16,9 +16,11 @@ type (
 		CategoryID  uint      `json:"category_id" gorm:"not null;"`
 		Quantity    uint      `json:"quantity" gorm:"not null; default:0"`
 
-		CreatedAt     time.Time     `json:"created_at" gorm:"<-:create"`
-		UpdatedAt     time.Time     `json:"updated_at"`
-		DeletedAt     time.Time     `json:"deleted_at" gorm:"default:null"`
+		CreatedAt time.Time `json:"created_at" gorm:"<-:create"`
+		UpdatedAt time.Time `json:"updated_at"`
+		DeletedAt time.Time `json:"deleted_at" gorm:"default:null"`
+		Active    int8      `json:"active" gorm:"type:int;default:1"`
+
 		EventCategory EventCategory `gorm:"foreignKey:CategoryID"`
 	}
 
@@ -62,7 +64,8 @@ type (
 		EventCategory string `json:"kategori"`
 		ImageURL      string `json:"image_url"`
 
-		CategoryID uint `json:"category_id"`
+		CategoryID uint   `json:"category_id"`
+		Location   string `json:"location" gorm:"type:text"`
 		//Tipe Price
 		//Price uint `json:"price"`
 	}
@@ -123,12 +126,13 @@ type (
 
 	//UPDATE
 	UpdateEventReq struct {
-		Name          string `json:"name"`
-		Description   string `json:"description"`
-		Price         uint   `json:"price"`
-		Quantity      uint   `json:"quantity"`
-		EventCategory string `json:"product_category"`
-		ImageURL      string `json:"image_url"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		Price       uint   `json:"price"`
+		Quantity    uint   `json:"quantity"`
+		ImageURL    string `json:"image_url"`
+		CategoryID  uint   `json:"category_id"`
+		Location    string `json:"location" gorm:"type:text"`
 	}
 
 	UpdateEventCategoryReq struct {

@@ -26,6 +26,7 @@ func MyRoutes(e *echo.Echo, middleware *middleware.Middleware, myHandler *h.Hand
 	public.GET("/category/:categoryid", myHandler.GetCategory)
 	public.GET("/events", myHandler.GetListEvents)
 	public.GET("/events/:eventid", myHandler.GetEvent)
+	public.GET("/events/price/:eventid", myHandler.GetEventPrice)
 
 	//Admin Route
 	//Backend Management Route by Admin
