@@ -58,17 +58,18 @@ type (
 
 	//CREATE
 	CreateEventReq struct {
-		Name          string `json:"name"`
-		Description   string `json:"description"`
-		Quantity      uint   `json:"quantity"`
-		EventCategory string `json:"kategori"`
-		ImageURL      string `json:"image_url"`
-
-		CategoryID uint   `json:"category_id"`
-		Location   string `json:"location" gorm:"type:text"`
-		//Tipe Price
-		//Price uint `json:"price"`
+		Event_Name  string `json:"event_name" `
+		Description string `json:"description" `
+		ImageURL    string `json:"image_url" `
+		Start_time  string `json:"start_time" `
+		End_time    string `json:"end_time" `
+		Location    string `json:"location"`
+		Latitude    string `json:"latitude" `
+		Longitude   string `json:"longitude" `
+		CategoryID  uint   `json:"category_id"`
+		Quantity    uint   `json:"quantity"`
 	}
+
 	CreateEventRes struct {
 		ID   uint   `json:"id"`
 		Name string `json:"event_name"`
