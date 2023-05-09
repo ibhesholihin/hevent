@@ -95,6 +95,7 @@ func (service adminService) LoginAdmin(c context.Context, adminReq models.AdminL
 		ID:            admin.ID,
 		Access_Token:  accesstoken,
 		Refresh_Token: refreshtoken,
+		UpdatedAt:     time.Now(),
 	}
 
 	adminUpdate, err := service.stores.Admin.UpdateAdmin(adm)
