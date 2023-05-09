@@ -33,7 +33,7 @@ func main() {
 	// Setup utils
 	cryptoSvc := crypto.NewCryptoService()
 	jwtSvc := jwt.NewJWTService(configApp.JWTSecretKey)
-	payServ := paygate.NewPaymentService(configApp.MIDTRANS_SERVER_KEY)
+	payService := paygate.NewPaymentService(configApp.MIDTRANS_SERVER_KEY)
 
 	// Setup db config
 	dbInstance, err := db.Database(configApp)
@@ -47,7 +47,7 @@ func main() {
 	myRepo := myrepo.NewRepository(dbInstance)
 
 	// Setup service
-	myService := myserv.NewService(myRepo, cryptoSvc, jwtSvc, payServ, ctxTimeout)
+	myService := myserv.NewService(myRepo, cryptoSvc, jwtSvc, payService, ctxTimeout)
 
 	//setup handler
 	myHandler := myhndlr.NewHandler(myService)
