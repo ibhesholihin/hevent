@@ -51,10 +51,10 @@ func (s *orderService) CreateCart(c context.Context, catReq md.CreateEventCatego
 		return md.CreateEventCategoryRes{}, err
 	}
 
-	katResp := md.CreateEventCategoryRes{
+	cart := md.CreateEventCategoryRes{
 		ID: kategori.ID, Category: kategori.Category,
 	}
-	return katResp, nil
+	return cart, nil
 }
 
 // Test Payment
