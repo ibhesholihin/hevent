@@ -25,9 +25,8 @@ type (
 
 		GetEventPrice(c echo.Context) error
 		GetEventPriceTipe(c echo.Context) error
-
+		AddEventPrice(c echo.Context) error
 		/*
-			AddEventPrice(c echo.Context) error
 			UpdateEventPrice(c echo.Context) error
 			RemoveEventPrice(c echo.Context) error
 		*/
@@ -373,5 +372,42 @@ func (h *eventHandler) GetEventPriceTipe(c echo.Context) error {
 		Code:    http.StatusOK,
 		Message: "Event Price Found",
 		Data:    price,
+	})
+}
+
+// AddEventPrice godoc
+// @Summary Event AddEvent
+// @Description Event AddEvent
+// @Tags Event
+// @Accept json
+// @Produce json
+// @Success 200
+// @Router api/v1/admin/events/price/:eventid [post]
+// @Security JwtToken / Admin
+func (h *eventHandler) AddEventPrice(c echo.Context) error {
+	ctx := c.Request().Context()
+	uid, _ := strconv.Atoi(c.Param("eventid"))
+
+	evt := md.EventPriceTipe{}
+	evt.EventID = uint(uid)
+	if err := c.Bind(&evt); err != nil {
+		return c.JSON(http.StatusBadRequest, md.HttpResponse{
+			Code:    http.StatusBadRequest,
+			Message: "Invalid Body Request",
+			Data:    err.Error(),
+		})
+	}
+	Res, err := h.EventService.AddEventPrice(ctx, evt)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, md.HttpResponse{
+			Code:    http.StatusInternalServerError,
+			Message: "Internal Server Error",
+			Data:    err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, md.HttpResponse{
+		Code:    http.StatusCreated,
+		Message: "Event Price Created Successfully",
+		Data:    Res,
 	})
 }
