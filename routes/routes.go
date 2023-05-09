@@ -34,6 +34,8 @@ func MyRoutes(e *echo.Echo, middleware *middleware.Middleware, myHandler *h.Hand
 	admin.GET("/profile", myHandler.GetAdminProfile)
 	admin.PUT("/updateprofile", myHandler.UpdateAdmin)
 
+	admin.GET("/users", myHandler.GetListUsers)
+
 	admin.POST("/category", myHandler.AddCategory)
 	admin.PUT("/category/:categoryid", myHandler.UpdateEventCategory)
 	//admin.DELETE("/category/:categoryid", myHandler.RemoveEventCategory)
@@ -42,7 +44,11 @@ func MyRoutes(e *echo.Echo, middleware *middleware.Middleware, myHandler *h.Hand
 	admin.PUT("/events/:eventid", myHandler.UpdateEvent)
 	admin.DELETE("/events/:eventid", myHandler.RemoveEvent)
 
-	admin.GET("/users", myHandler.GetListUsers)
+	//events price
+	admin.POST("/events/price/:eventid", myHandler.AddEventPrice)
+
+	//testimg payment handler
+	admin.GET("/testpayment", myHandler.TestPayment)
 
 	//User Route
 	//Apps Management Route by user
@@ -50,15 +56,14 @@ func MyRoutes(e *echo.Echo, middleware *middleware.Middleware, myHandler *h.Hand
 	user.GET("/profile", myHandler.GetUserProfile)
 	user.PUT("/updateprofile", myHandler.UpdateUserProfile)
 
-	/*
-		//Order Ticketing
-		user.GET("/users/:userid/cart", userHandler.GetCartSession)
-		user.POST("/users/:userid/cart/:sessionid/item", userHandler.AddItemToCart)
-		user.GET("/users/:userid/cart/:sessionid/item", userHandler.GetItemsCart)
-		user.DELETE("/users/:userid/cart/:sessionid/item/:itemid", userHandler.DeleteItemFromCart)
-		user.POST("/users/:userid/order/create/:sessionid", userHandler.CreateOrder)
-		user.GET("/users/:userid/order", userHandler.GetListOrders)
-		user.GET("/users/:userid/order/:orderid", userHandler.GetOrderById)
-		user.PUT("/users/:userid/order/:orderid/payment/:paymentid", userHandler.UploadReceipt)
-	*/
+	//Order Ticketing
+	user.GET("/users/:userid/cart", myHandler.GetCartSession)
+	user.POST("/users/:userid/cart/:sessionid/item", myHandler.AddItemToCart)
+	user.GET("/users/:userid/cart/:sessionid/item", myHandler.GetItemsCart)
+	user.DELETE("/users/:userid/cart/:sessionid/item/:itemid", myHandler.DeleteItemFromCart)
+	user.POST("/users/:userid/order/create/:sessionid", myHandler.CreateOrder)
+	user.GET("/users/:userid/order", myHandler.GetListOrders)
+	user.GET("/users/:userid/order/:orderid", myHandler.GetOrderById)
+	user.PUT("/users/:userid/order/:orderid/payment/:paymentid", myHandler.UploadReceipt)
+
 }

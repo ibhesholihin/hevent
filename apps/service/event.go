@@ -26,6 +26,7 @@ type (
 
 		//event price tipe
 		FindListPrice(c context.Context, eventid uint) ([]md.EventPriceTipe, error)
+		AddEventPrice(c context.Context, EvReq md.EventPriceTipe) (md.EventPriceTipe, error)
 	}
 
 	//init service parameter
@@ -78,16 +79,27 @@ func (s *eventService) CreateEvent(c context.Context, EvReq md.CreateEventReq) (
 	_, cancel := context.WithTimeout(c, s.contextTimeout)
 	defer cancel()
 
+	dateFormat := "2006-01-02 15:04:05"
+	startEvent, _ := time.Parse(dateFormat, EvReq.Start_time)
+	endTime, _ := time.Parse(dateFormat, EvReq.End_time)
+
 	//Store Events
-	pd := md.Event{
-		Event_Name:  EvReq.Name,
+	evt := md.Event{
+		Event_Name:  EvReq.Event_Name,
 		Description: EvReq.Description,
 		Quantity:    EvReq.Quantity,
 		ImageURL:    EvReq.ImageURL,
 		CategoryID:  EvReq.CategoryID,
+
+		Location:  EvReq.Location,
+		Latitude:  EvReq.Latitude,
+		Longitude: EvReq.Longitude,
+
+		Start_time: startEvent,
+		End_time:   endTime,
 	}
 
-	evt, err := s.stores.Event.CreateEvent(pd)
+	evt, err := s.stores.Event.CreateEvent(evt)
 	if err != nil {
 		return md.CreateEventRes{}, err
 	}
@@ -195,4 +207,23 @@ func (s *eventService) FindListPrice(c context.Context, eventid uint) ([]md.Even
 
 	return price, nil
 
+}
+
+// Event Price Add
+func (s *eventService) AddEventPrice(c context.Context, req md.EventPriceTipe) (md.EventPriceTipe, error) {
+	_, cancel := context.WithTimeout(c, s.contextTimeout)
+	defer cancel()
+
+	price, err := s.stores.Event.AddEventPrice(req)
+	if err != nil {
+		return md.EventPriceTipe{}, err
+	}
+
+	Resp := md.EventPriceTipe{
+		ID:      price.ID,
+		EventID: price.EventID,
+		Tipe:    price.Tipe,
+		Price:   price.Price,
+	}
+	return Resp, nil
 }
