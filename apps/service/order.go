@@ -62,7 +62,8 @@ func (s *orderService) TestPayment(c context.Context) (string, string, error) {
 	ctx, cancel := context.WithTimeout(c, s.contextTimeout)
 	defer cancel()
 
-	payID, payUrl, err := s.payment.GeneratePayReq(ctx, "ibhe", "redaksi@herald.id", "114444", 2000000)
+	payID, payUrl, err := s.payment.GeneratePayReq(ctx, "john doe", "admin@demo.id",
+		"114432", 2000000)
 
 	fmt.Println("URl :", payUrl)
 
