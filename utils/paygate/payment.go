@@ -15,6 +15,7 @@ import (
 type payService struct {
 	snapData snap.Client
 	midApi   coreapi.Client
+	baseUri  string
 }
 
 func initializeSnapData(serverkey string) snap.Client {
@@ -30,19 +31,20 @@ func initializeCoreData(serverkey string) coreapi.Client {
 	return coreData
 }
 
-func NewPaymentService(serverkey string) PayService {
+func NewPaymentService(serverkey string, baseuri string) PayService {
 	return &payService{
 		snapData: initializeSnapData(serverkey),
 		midApi:   initializeCoreData(serverkey),
+		baseUri:  baseuri,
 	}
 }
 
 func (s *payService) GeneratePayReq(ctx context.Context, name string, email string, orderid string, total int64) (string, string, error) {
 
-	s.snapData.Options.SetPaymentAppendNotification("http://127.0.0.1:8080/append")
+	s.snapData.Options.SetPaymentAppendNotification(s.baseUri + "/append")
 
 	// Optional : here is how if you want to set override payment notification for this request
-	s.snapData.Options.SetPaymentOverrideNotification("http://127.0.0.1:8080/override")
+	s.snapData.Options.SetPaymentOverrideNotification(s.baseUri + "/override")
 
 	snapReq := &snap.Request{
 		CustomerDetail: &mid.CustomerDetails{
