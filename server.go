@@ -30,10 +30,13 @@ func main() {
 	configApp := config.LoadConfig()
 	ctxTimeout := time.Duration(configApp.ContextTimeout) * time.Second
 
+	PORT := os.Getenv("APP_PORT")
+	payment_route := configApp.BaseURL + PORT + "/payment"
+
 	// Setup utils
 	cryptoSvc := crypto.NewCryptoService()
 	jwtSvc := jwt.NewJWTService(configApp.JWTSecretKey)
-	payService := paygate.NewPaymentService(configApp.MIDTRANS_SERVER_KEY)
+	payService := paygate.NewPaymentService(configApp.MIDTRANS_SERVER_KEY, payment_route)
 
 	// Setup db config
 	dbInstance, err := db.Database(configApp)
@@ -67,7 +70,6 @@ func main() {
 	//setup routes
 	httpRoutes.MyRoutes(e, appMiddleware, myHandler)
 
-	PORT := os.Getenv("APP_PORT")
 	if PORT == "" {
 		PORT = "8778"
 	}

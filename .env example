@@ -1,0 +1,13 @@
+BASE_URI=your api url
+APP_PORT=api port
+DB_PORT=db port
+DB_HOST=db host
+DB_NAME=db name
+DB_USER=db user
+DB_PASS=db pass
+MIDTRANS_SERVER_KEY=midtrans server key/ get from midtrans dashboard
+MIDTRANS_CLIENT_KEY=midtrans client key/ get from midtrans dashboard
+ACCESS_TOKEN_DURATION=access token expire time 
+LOGGER_LEVEL=debug
+CONTEXT_TIMEOUT=180
+JWT_SECRET_KaEY=your jwt key

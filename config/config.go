@@ -21,6 +21,7 @@ type Config struct {
 	DB_PASS             string
 	MIDTRANS_SERVER_KEY string
 	MIDTRANS_CLIENT_KEY string
+	BaseURL             string
 }
 
 // LoadConfig will load config from environment variable
@@ -44,6 +45,8 @@ func LoadConfig() (config *Config) {
 	db_USER := os.Getenv("DB_USER")
 	db_PASS := os.Getenv("DB_PASS")
 
+	base_url := os.Getenv("BASE_URI")
+
 	return &Config{
 		DatabaseURL:    databaseURL,
 		CacheURL:       cacheURL,
@@ -59,5 +62,7 @@ func LoadConfig() (config *Config) {
 
 		MIDTRANS_SERVER_KEY: midtrans_SERVER_KEY,
 		MIDTRANS_CLIENT_KEY: midtrans_CLIENT_KEY,
+
+		BaseURL: base_url,
 	}
 }
