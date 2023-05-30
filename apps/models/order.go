@@ -5,7 +5,7 @@ import "time"
 type (
 	CartSession struct {
 		ID        uint      `json:"id" gorm:"primaryKey;not null;unique"`
-		UserID    string    `json:"user_id" gorm:"type:int;not null;"`
+		UserID    int64     `json:"user_id" gorm:"type:int;not null;"`
 		Total     uint      `json:"total" gorm:"not null;default:0"`
 		CreatedAt time.Time `json:"created_at" gorm:"<-:create"`
 		UpdatedAt time.Time `json:"updated_at"`
@@ -76,9 +76,9 @@ type (
 	}
 
 	AddItemToCartReq struct {
-		SessionID uint `json:"session_id"`
-		ProductID uint `json:"product_id"`
-		Quantitty uint `json:"quantity"`
+		SessionID    uint `json:"session_id"`
+		EventPriceID uint `json:"event_price_id"`
+		Quantitty    uint `json:"quantity"`
 	}
 
 	CreateOrderReq struct {
@@ -87,9 +87,9 @@ type (
 	}
 
 	CreateOrderItemsReq struct {
-		ID        uint `json:"id"`
-		ProductID uint `json:"product_id"`
-		Quantitty uint `json:"quantity"`
+		ID           uint `json:"id"`
+		EventPriceID uint `json:"event_price_id"`
+		Quantitty    uint `json:"quantity"`
 	}
 
 	GetOrdersRes struct {
