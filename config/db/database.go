@@ -49,8 +49,8 @@ func Migrate(DB *gorm.DB) {
 		&md.EventPriceTipe{},
 		&md.EventSponsor{},
 
-		//&md.CartSession{},
-		//&md.CartItem{},
+		&md.CartSession{},
+		&md.CartItem{},
 		//&md.Order{},
 		//&md.OrderItem{},
 		//&md.PaymentDetails{},

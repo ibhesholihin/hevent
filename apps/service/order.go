@@ -15,9 +15,10 @@ type (
 
 	//init service contract
 	OrderService interface {
-		FindListOrder(c context.Context) ([]md.EventCategory, error)
-		//AddCategory(c context.Context, adminReq md.CreateEventCategoryReq) (md.CreateEventCategoryRes, error)
+		FindOrCreateCart(c context.Context, userid int64) (interface{}, error)
+		AddItemToCart(cartItemReq md.AddItemToCartReq) error
 
+		FindListOrder(c context.Context) ([]md.EventCategory, error)
 		TestPayment(c context.Context) (string, string, error)
 	}
 
@@ -41,20 +42,52 @@ func (s *orderService) FindListOrder(c context.Context) ([]md.EventCategory, err
 	return listCategory, nil
 }
 
-// Create User Cart Order
-func (s *orderService) CreateCart(c context.Context, catReq md.CreateEventCategoryReq) (md.CreateEventCategoryRes, error) {
-	_, cancel := context.WithTimeout(c, s.contextTimeout)
-	defer cancel()
+// Transaction Cart
+func (s *orderService) FindOrCreateCart(c context.Context, userid int64) (interface{}, error) {
+	cartSession, err1 := s.stores.Order.FindOrCreateCart(userid)
+	if err1 != nil {
+		return md.CartSession{}, err1
+	}
+	cartItems, err2 := s.stores.Order.FindCartItems(cartSession.ID)
+	if err2 != nil {
+		return md.CartSession{}, err2
+	}
+	resultCartItems := []md.CartItemRes{}
 
-	kategori, err := s.stores.Event.FindOrCreateCategory(catReq.Category)
+	for _, item := range cartItems {
+		cartSession.Total = cartSession.Total + (item.Quantity * item.EventPrice.Price)
+		dataAppend := md.CartItemRes{
+			ID:        item.ID,
+			SessionID: item.SessionID,
+			EventID:   item.EventPrice.EventID,
+			Quantity:  item.Quantity,
+			UpdatedAt: item.UpdatedAt,
+			Event:     item.EventPrice.Event,
+		}
+		resultCartItems = append(resultCartItems, dataAppend)
+	}
+
+	cartResult := md.CartSessionRes{
+		ID:        cartSession.ID,
+		UserUID:   cartSession.UserID,
+		Total:     cartSession.Total,
+		UpdatedAt: cartSession.UpdatedAt,
+		CartItems: resultCartItems,
+	}
+	return cartResult, nil
+}
+
+func (s *orderService) AddItemToCart(cartItemReq md.AddItemToCartReq) error {
+	cartItem := md.CartItem{
+		SessionID:    cartItemReq.SessionID,
+		EventPriceID: cartItemReq.EventPriceID,
+		Quantity:     cartItemReq.Quantitty,
+	}
+	err := s.stores.Order.AddItemToCart(cartItem)
 	if err != nil {
-		return md.CreateEventCategoryRes{}, err
+		return err
 	}
-
-	cart := md.CreateEventCategoryRes{
-		ID: kategori.ID, Category: kategori.Category,
-	}
-	return cart, nil
+	return nil
 }
 
 // Test Payment
